@@ -1,4 +1,4 @@
-module github.com/FlameFlashy/k_prom_bot
+module github.com/flameflashy/kbot
 
 go 1.20
 
