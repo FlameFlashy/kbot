@@ -20,7 +20,7 @@ build: format get
 	CGO_ENABLED=0 GOOS=${TARGETOS} GOARCH=${TARGETARCH} go build -v -o kbot -ldflags "-X="github.com/flameflashy/kbot/cmd.appVersion=${VERSION}
 
 image:
-	docker build . -t ${REGISTRY}/${APP}:${VERSION}-${TARGETARCH}
+	docker build . -t ${REGISTRY}/${APP}:${VERSION}-${TARGETARCH} --build-arg TARGETOS=${TARGETOS} --build-arg TARGETOSARCH=${TARGETOSARCH} --no-cache
 
 push: 
 	docker push ${REGISTRY}/${APP}:${VERSION}-${TARGETARCH}
@@ -29,4 +29,12 @@ push:
 clean:
 	rm -rf kbot
 	docker rmi ${REGISTRY}/${APP}:${VERSION}-${TARGETARCH}
-	
+
+linux: TARGETOS = linux
+linux: build image push clean
+
+windows: TARGETOS = windows
+windows: build image push clean
+
+macos: TARGETOS = darwin
+macos: build image push clean
