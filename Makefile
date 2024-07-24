@@ -1,5 +1,6 @@
 APP=$(shell basename $(shell git remote get-url origin))
-REGISTRY=ghcr.io/flameflashy
+#REGISTRY=ghcr.io/flameflashy
+REGISTRY := dmitriysokolov
 VERSION=$(shell git describe --tags --abbrev=0)$(shell git rev-parse --short HEAD)
 TARGETOS=linux #linux darwin windows
 TARGETARCH=amd64 #arm64
