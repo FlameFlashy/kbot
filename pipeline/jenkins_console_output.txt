@@ -1,0 +1,344 @@
+Started by user Jenkins Admin
+[Pipeline] Start of Pipeline
+[Pipeline] node
+Running on github host in /tmp/workspace/kbot-pipe
+[Pipeline] {
+[Pipeline] withEnv
+[Pipeline] {
+[Pipeline] stage
+[Pipeline] { (clone)
+[Pipeline] echo
+Clone repo
+[Pipeline] git
+The recommended git tool is: NONE
+No credentials specified
+Fetching changes from the remote Git repository
+Checking out Revision 8ced0a65f92d14ed165b0d7474de32ae1a77a09e (refs/remotes/origin/main)
+Commit message: "add jenkins file"
+First time build. Skipping changelog.
+[Pipeline] }
+[Pipeline] // stage
+[Pipeline] stage
+[Pipeline] { (test)
+[Pipeline] echo
+run test
+ > git rev-parse --resolve-git-dir /tmp/workspace/kbot-pipe/.git # timeout=10
+ > git config remote.origin.url https://github.com/flameflashy/kbot # timeout=10
+Fetching upstream changes from https://github.com/flameflashy/kbot
+ > git --version # timeout=10
+ > git --version # 'git version 2.45.2'
+ > git fetch --tags --force --progress -- https://github.com/flameflashy/kbot +refs/heads/*:refs/remotes/origin/* # timeout=10
+ > git rev-parse refs/remotes/origin/main^{commit} # timeout=10
+ > git config core.sparsecheckout # timeout=10
+ > git checkout -f 8ced0a65f92d14ed165b0d7474de32ae1a77a09e # timeout=10
+ > git branch -a -v --no-abbrev # timeout=10
+ > git branch -D main # timeout=10
+ > git checkout -b main 8ced0a65f92d14ed165b0d7474de32ae1a77a09e # timeout=10
+[Pipeline] sh
++ make test
+go test -v
+?   	github.com/flameflashy/kbot	[no test files]
+[Pipeline] }
+[Pipeline] // stage
+[Pipeline] stage
+[Pipeline] { (build)
+[Pipeline] parallel
+[Pipeline] { (Branch: Build Linux)
+[Pipeline] { (Branch: Build Darwin)
+[Pipeline] { (Branch: Build Windows)
+[Pipeline] stage
+[Pipeline] { (Build Linux)
+[Pipeline] stage
+[Pipeline] { (Build Darwin)
+[Pipeline] stage
+[Pipeline] { (Build Windows)
+Stage "Build Darwin" skipped due to when conditional
+[Pipeline] getContext
+[Pipeline] }
+Stage "Build Windows" skipped due to when conditional
+[Pipeline] getContext
+[Pipeline] }
+[Pipeline] // stage
+[Pipeline] // stage
+[Pipeline] }
+[Pipeline] }
+[Pipeline] echo
+Building for Linux
+[Pipeline] sh
++ make image TARGETOS=linux
+docker build . -t dmitriysokolov/kbot:v1.0.98ced0a6-linux-arm64 --build-arg TARGETOS=linux --build-arg TARGETOSARCH=arm64 --no-cache
+#0 building with "default" instance using docker driver
+
+#1 [internal] load build definition from Dockerfile
+#1 transferring dockerfile: 463B done
+#1 DONE 0.1s
+
+#2 [internal] load metadata for docker.io/library/alpine:latest
+#2 ...
+
+#3 [auth] library/alpine:pull token for registry-1.docker.io
+#3 DONE 0.0s
+
+#4 [internal] load metadata for quay.io/projectquay/golang:1.20
+#4 DONE 0.5s
+
+#2 [internal] load metadata for docker.io/library/alpine:latest
+#2 DONE 0.8s
+
+#5 [internal] load .dockerignore
+#5 transferring context: 2B done
+#5 DONE 0.0s
+
+#6 FROM docker.io/library/alpine:latest@sha256:0a4eaa0eecf5f8c050e5bba433f58c052be7587ee8af3e8b3910ef9ab5fbe9f5
+#6 CACHED
+
+#7 [builder 1/6] FROM quay.io/projectquay/golang:1.20@sha256:561c49a22971d6ee75a88d3454639ca1b12b4e7ab396407a849d6ff2f1337ee7
+#7 CACHED
+
+#8 [internal] load build context
+#8 transferring context: 21.75kB 0.0s done
+#8 DONE 0.1s
+
+#9 [builder 2/6] RUN echo "TARGETOS=linux"
+#9 0.448 TARGETOS=linux
+#9 DONE 0.5s
+
+#10 [builder 3/6] RUN echo "TARGETOSARCH=arm64"
+#10 0.532 TARGETOSARCH=arm64
+#10 DONE 0.6s
+
+#11 [builder 4/6] WORKDIR /go/src/app
+#11 DONE 0.3s
+
+#12 [builder 5/6] COPY . .
+#12 DONE 0.4s
+
+#13 [builder 6/6] RUN make linux TARGETOSARCH=arm64
+#13 0.518 make build TARGETOS=linux
+#13 0.520 make[1]: Entering directory '/go/src/app'
+#13 0.521 gofmt -s -w ./
+#13 0.525 go get
+#13 2.799 go: downloading github.com/spf13/cobra v1.7.0
+#13 2.799 go: downloading gopkg.in/telebot.v3 v3.1.3
+#13 2.884 go: downloading github.com/inconshreveable/mousetrap v1.1.0
+#13 2.885 go: downloading github.com/spf13/pflag v1.0.5
+#13 3.126 CGO_ENABLED=0 GOOS=linux GOARCH=arm64  go build -v -o kbot -ldflags "-X="github.com/flameflashy/kbot/cmd.appVersion=v1.0.98ced0a6
+#13 3.232 internal/goarch
+#13 3.232 internal/unsafeheader
+#13 3.242 internal/cpu
+#13 3.243 internal/abi
+#13 3.270 internal/coverage/rtcov
+#13 3.280 internal/goexperiment
+#13 3.288 internal/goos
+#13 3.294 internal/bytealg
+#13 3.298 runtime/internal/atomic
+#13 3.347 runtime/internal/math
+#13 3.360 runtime/internal/sys
+#13 3.364 runtime/internal/syscall
+#13 3.379 internal/itoa
+#13 3.394 math/bits
+#13 3.408 runtime
+#13 3.456 math
+#13 3.835 unicode/utf8
+#13 3.866 internal/race
+#13 3.875 sync/atomic
+#13 3.949 unicode
+#13 4.247 encoding
+#13 4.258 internal/nettrace
+#13 4.265 unicode/utf16
+#13 4.281 crypto/internal/alias
+#13 4.298 crypto/subtle
+#13 4.320 crypto/internal/boring/sig
+#13 4.352 container/list
+#13 4.389 vendor/golang.org/x/crypto/cryptobyte/asn1
+#13 4.400 vendor/golang.org/x/crypto/internal/alias
+#13 6.748 sync
+#13 6.749 internal/reflectlite
+#13 6.990 internal/testlog
+#13 7.021 internal/godebug
+#13 7.061 internal/singleflight
+#13 7.095 internal/intern
+#13 7.153 math/rand
+#13 7.307 errors
+#13 7.307 sort
+#13 7.345 strconv
+#13 7.418 io
+#13 7.541 internal/oserror
+#13 7.567 syscall
+#13 7.613 reflect
+#13 8.151 internal/syscall/unix
+#13 8.183 time
+#13 8.873 internal/poll
+#13 9.140 internal/fmtsort
+#13 9.157 internal/safefilepath
+#13 9.168 internal/syscall/execenv
+#13 9.182 path
+#13 9.192 bytes
+#13 9.245 io/fs
+#13 9.387 context
+#13 9.390 os
+#13 9.465 encoding/binary
+#13 9.641 encoding/base64
+#13 9.705 strings
+#13 9.781 fmt
+#13 9.973 bufio
+#13 10.13 vendor/golang.org/x/net/dns/dnsmessage
+#13 10.26 encoding/csv
+#13 10.33 encoding/hex
+#13 10.38 flag
+#13 10.50 net/netip
+#13 10.54 path/filepath
+#13 10.67 net/url
+#13 10.78 net
+#13 10.82 text/template/parse
+#13 11.34 text/template
+#13 11.92 encoding/json
+#13 12.66 io/ioutil
+#13 12.69 log
+#13 12.78 hash
+#13 12.79 crypto
+#13 12.80 github.com/spf13/pflag
+#13 12.81 crypto/cipher
+#13 12.99 crypto/internal/boring
+#13 13.05 crypto/internal/randutil
+#13 13.07 math/big
+#13 13.74 github.com/spf13/cobra
+#13 14.13 crypto/rand
+#13 14.19 mime
+#13 14.26 mime/quotedprintable
+#13 14.32 net/textproto
+#13 14.38 compress/flate
+#13 14.50 mime/multipart
+#13 14.61 hash/crc32
+#13 14.65 crypto/aes
+#13 14.68 compress/gzip
+#13 14.74 crypto/des
+#13 14.79 crypto/internal/edwards25519/field
+#13 14.80 crypto/internal/nistec/fiat
+#13 14.87 embed
+#13 14.93 crypto/internal/bigmod
+#13 15.03 crypto/internal/boring/bbig
+#13 15.05 crypto/sha512
+#13 15.11 encoding/asn1
+#13 15.44 vendor/golang.org/x/crypto/cryptobyte
+#13 15.45 crypto/internal/nistec
+#13 15.65 crypto/internal/edwards25519
+#13 15.78 crypto/ecdh
+#13 15.85 crypto/elliptic
+#13 15.86 crypto/ed25519
+#13 15.91 crypto/hmac
+#13 15.93 crypto/md5
+#13 16.02 crypto/ecdsa
+#13 16.04 crypto/rc4
+#13 16.06 crypto/rsa
+#13 16.25 crypto/sha1
+#13 16.26 crypto/sha256
+#13 16.32 crypto/dsa
+#13 16.33 crypto/x509/pkix
+#13 16.36 encoding/pem
+#13 16.37 vendor/golang.org/x/crypto/chacha20
+#13 16.41 crypto/x509
+#13 16.46 vendor/golang.org/x/crypto/internal/poly1305
+#13 16.53 vendor/golang.org/x/crypto/chacha20poly1305
+#13 16.59 vendor/golang.org/x/crypto/hkdf
+#13 16.60 vendor/golang.org/x/text/transform
+#13 16.68 vendor/golang.org/x/text/unicode/bidi
+#13 17.01 vendor/golang.org/x/text/secure/bidirule
+#13 17.04 vendor/golang.org/x/text/unicode/norm
+#13 17.25 crypto/tls
+#13 17.80 vendor/golang.org/x/net/idna
+#13 18.29 vendor/golang.org/x/net/http/httpguts
+#13 18.35 vendor/golang.org/x/net/http/httpproxy
+#13 18.46 vendor/golang.org/x/net/http2/hpack
+#13 18.65 net/http/internal
+#13 18.71 net/http/internal/ascii
+#13 18.74 regexp/syntax
+#13 18.94 net/http/httptrace
+#13 19.00 net/http
+#13 19.16 regexp
+#13 21.18 gopkg.in/telebot.v3
+#13 21.62 github.com/flameflashy/kbot/cmd
+#13 21.66 github.com/flameflashy/kbot
+#13 22.10 make[1]: Leaving directory '/go/src/app'
+#13 DONE 22.4s
+
+#14 [stage-1 1/3] COPY --from=builder /go/src/app/kbot .
+#14 DONE 0.2s
+
+#15 [stage-1 2/3] COPY --from=alpine:latest /etc/ssl/certs/ca-certificates.crt /etc/ssl/certs/
+#15 DONE 0.4s
+
+#16 exporting to image
+#16 exporting layers
+#16 exporting layers 1.0s done
+#16 writing image sha256:74a685084d4da0f700fade021501d1a0ab0fd013c1910071e068d1c2f225719e 0.0s done
+#16 naming to docker.io/dmitriysokolov/kbot:v1.0.98ced0a6-linux-arm64 0.0s done
+#16 DONE 1.1s
+[Pipeline] }
+[Pipeline] // stage
+[Pipeline] }
+[Pipeline] // parallel
+[Pipeline] }
+[Pipeline] // stage
+[Pipeline] stage
+[Pipeline] { (push)
+[Pipeline] parallel
+[Pipeline] { (Branch: Push Linux to dockerhub)
+[Pipeline] { (Branch: Push Darwin to dockerhub)
+[Pipeline] { (Branch: Push Windows to dockerhub)
+[Pipeline] stage
+[Pipeline] { (Push Linux to dockerhub)
+[Pipeline] stage
+[Pipeline] { (Push Darwin to dockerhub)
+[Pipeline] stage
+[Pipeline] { (Push Windows to dockerhub)
+Stage "Push Darwin to dockerhub" skipped due to when conditional
+[Pipeline] getContext
+[Pipeline] }
+Stage "Push Windows to dockerhub" skipped due to when conditional
+[Pipeline] getContext
+[Pipeline] }
+[Pipeline] // stage
+[Pipeline] // stage
+[Pipeline] }
+[Pipeline] }
+[Pipeline] script
+[Pipeline] {
+[Pipeline] withEnv
+[Pipeline] {
+[Pipeline] withDockerRegistry
+Using the existing docker config file.Removing blacklisted property: auths$ docker login -u dmitriysokolov -p ******** https://index.docker.io/v1/
+WARNING! Using --password via the CLI is insecure. Use --password-stdin.
+WARNING! Your password will be stored unencrypted in /tmp/workspace/kbot-pipe@tmp/b341b5c6-8cb0-4d09-bb6b-20279c82739a/config.json.
+Configure a credential helper to remove this warning. See
+https://docs.docker.com/engine/reference/commandline/login/#credentials-store
+
+Login Succeeded
+[Pipeline] {
+[Pipeline] sh
++ make push TARGETOS=linux
+docker push dmitriysokolov/kbot:v1.0.98ced0a6-linux-arm64 
+The push refers to repository [docker.io/dmitriysokolov/kbot]
+fed94d2bc49e: Preparing
+0b07fdec56b8: Preparing
+fed94d2bc49e: Pushed
+0b07fdec56b8: Pushed
+v1.0.98ced0a6-linux-arm64: digest: sha256:ec3f5343f7a03e25ca644968c601df4326d31d37e3f10c87464a6d335ce2b385 size: 737
+[Pipeline] }
+[Pipeline] // withDockerRegistry
+[Pipeline] }
+[Pipeline] // withEnv
+[Pipeline] }
+[Pipeline] // script
+[Pipeline] }
+[Pipeline] // stage
+[Pipeline] }
+[Pipeline] // parallel
+[Pipeline] }
+[Pipeline] // stage
+[Pipeline] }
+[Pipeline] // withEnv
+[Pipeline] }
+[Pipeline] // node
+[Pipeline] End of Pipeline
+Finished: SUCCESS
